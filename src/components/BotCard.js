@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const botTypeClasses = {
   Assault: "icon military",
@@ -10,12 +10,21 @@ const botTypeClasses = {
 };
 
 function BotCard({ bot }) {
+  const [enlisted, setEnlisted] = useState(false);
+
+  const handleEnlistClick = () => {
+    if (!enlisted) {
+      console.log(`Enlisting bot: ${bot.name}`);
+      setEnlisted(true);
+      enlistBot(bot);//call the enlist fuction from Yourbotarmy
+    }
+  };
   return (
-    <div className="ui column">
+    <div className={`ui column ${enlisted ? "enlisted" : ""}`}>
       <div
         className="ui card"
         key={bot.id}
-        onClick={() => console.log("add code to connect event listener")}
+        onClick={handleEnlistClick}
       >
         <div className="image">
           <img alt="oh no!" src={bot.avatar_url} />
@@ -47,9 +56,10 @@ function BotCard({ bot }) {
             <div className="ui center aligned segment basic">
               <button
                 className="ui mini red button"
-                onClick={() =>
-                  console.log("add code to connect event listener")
-                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  console.log("Add code for discharging here");
+                }}
               >
                 x
               </button>
