@@ -1,9 +1,4 @@
-
 import React from "react";
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./components/App";
-import "./index.css";
 import BotsPage from "./BotsPage";
 
 ReactDOM.render(<App />, document.getElementById("root"));

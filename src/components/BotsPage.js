@@ -1,29 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import YourBotArmy from "./YourBotArmy";
 import BotCollection from "./BotCollection";
-import BotCard from "./BotCard";
+
 
 function BotsPage() {
-  const [allBots, setAllBots] = useState([]);
-
+  const [bots, setBots] = useState([]);
   useEffect(() => {
-    // Fetch all bots data from the backend
-    const fetchAllBots = async () => {
-      try {
-        const response = await fetch("http://localhost:8002/bots");
-        const data = await response.json();
-        setAllBots(data.bots);
-      } catch (error) {
-        console.error("Could not fetch all bots:", error);
-      }
-    };
+    fetch("http://localhost:8002/bots")
+      .then(response => response.json())
+      .then(setBots)
+  }, [])
 
-    fetchAllBots();
-  }, []);
+  function enlistBot(bot) {
+    console.log(bot);
+    setBots(bots.map(b => b.id === bot.id ? { ...b, army: true } : b));
+  }
+
+  function removeBot(bot) {
+    console.log(bot);
+    setBots(bots.map(b => b.id === bot.id ? { ...b, army: false } : b));
+  }
+
+  function deleteBot(bot) {
+    setBots(bots.filter(b => b.id !== bot.id))
+  }
+
   return (
     <div>
-      <YourBotArmy />
-      <BotCollection bots={allBots}/>
+      <YourBotArmy bots={bots.filter(b => b.army)} removeBot={removeBot} deleteBot={deleteBot} />
+      <BotCollection bots={bots} enlistBot={enlistBot} deleteBot={deleteBot} />
     </div>
   )
 }
