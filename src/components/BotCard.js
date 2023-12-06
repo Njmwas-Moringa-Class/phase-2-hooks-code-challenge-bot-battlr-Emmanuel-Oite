@@ -9,15 +9,19 @@ const botTypeClasses = {
   Captain: "icon star",
 };
 
-function BotCard({ bot }) {
+function BotCard({ bot, enlistBot }) {
   const [enlisted, setEnlisted] = useState(false);
 
   const handleEnlistClick = () => {
     if (!enlisted) {
       console.log(`Enlisting bot: ${bot.name}`);
       setEnlisted(true);
-      enlistBot(bot);//call the enlist fuction from Yourbotarmy
+      enlistBot(bot);
     }
+  };
+
+  const handleDischargeClick = () => {
+    console.log(`Discharging bot: ${bot.name}`);
   };
   return (
     <div className={`ui column ${enlisted ? "enlisted" : ""}`}>
@@ -55,11 +59,8 @@ function BotCard({ bot }) {
           <span>
             <div className="ui center aligned segment basic">
               <button
-                className="ui mini red button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  console.log("Add code for discharging here");
-                }}
+                className={`ui mini red button ${enlisted ? "" : "hidden"}`}
+                onClick={handleDischargeClick}
               >
                 x
               </button>
